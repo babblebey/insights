@@ -1,7 +1,8 @@
 import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import * as ScrollArea from "@radix-ui/react-scroll-area";
 import clsx from "clsx";
+
+import { ScrollArea, ScrollViewport } from "components/atoms/ScrollArea/scroll-area";
 
 const Select = SelectPrimitive.Root;
 
@@ -44,10 +45,10 @@ const SelectContent = React.forwardRef<
       position={position}
       {...props}
     >
-      <ScrollArea.Root 
+      <ScrollArea 
         type="auto"
         className={clsx(
-          position === "popper" && "w-full"
+          "relative overflow-hidden"
         )}
       >
         <SelectPrimitive.Viewport
@@ -58,20 +59,11 @@ const SelectContent = React.forwardRef<
               "max-h-[var(--radix-select-content-available-height)] w-full min-w-[var(--radix-select-trigger-width)]"
           )}
         >        
-          <ScrollArea.Viewport className="max-h-[var(--radix-select-content-available-height)] w-full">
+          <ScrollViewport className="max-h-[var(--radix-select-content-available-height)] w-full">
             {children}
-          </ScrollArea.Viewport>
+          </ScrollViewport>
         </SelectPrimitive.Viewport>
-        <ScrollArea.Scrollbar
-          orientation="vertical"
-          className={clsx(
-            "flex h-full w-1.5 border-l border-l-transparent select-none touch-none transition-colors duration-[160ms] ease-out"
-          )}
-        >
-          <ScrollArea.Thumb className="relative bg-light-slate-5 flex-1 rounded-full bg-border" />
-        </ScrollArea.Scrollbar>
-        <ScrollArea.Corner />
-      </ScrollArea.Root>
+      </ScrollArea>
     </SelectPrimitive.Content>
   </SelectPrimitive.Portal>
 ));
