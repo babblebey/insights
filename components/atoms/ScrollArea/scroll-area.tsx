@@ -3,7 +3,24 @@ import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 
 import clsx from "clsx";
 
-const ScrollArea = ScrollAreaPrimitive.Root;
+const ScrollArea = React.forwardRef<
+  React.ElementRef<typeof ScrollAreaPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>
+>(({ className, children, ...props }, ref) => (
+  <ScrollAreaPrimitive.Root
+    ref={ref}
+    className={clsx(
+      "relative overflow-hidden", 
+      className
+    )}
+    {...props}
+  >
+    <ScrollViewport>
+      {children}
+    </ScrollViewport>
+  </ScrollAreaPrimitive.Root>
+));
+ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName;
 
 const ScrollViewport = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Root>,
@@ -13,7 +30,7 @@ const ScrollViewport = React.forwardRef<
     <ScrollAreaPrimitive.Viewport
       ref={ref}
       className={clsx(
-        "relative overflow-hidden",
+        "h-full w-full rounded-[inherit]",
         className
       )}
       {...props}
@@ -33,9 +50,11 @@ const ScrollBar = React.forwardRef<
   <ScrollAreaPrimitive.Scrollbar
     ref={ref}
     className={clsx(
-      "flex touch-none select-none transition-colors duration-[160ms] ease-out",
+      "flex touch-none select-none p-[1px] transition-colors duration-[160ms] ease-out",
       orientation === "vertical" &&
-        "h-full w-1.5 border-l border-l-transparent",
+        "h-full w-2 border-l border-l-transparent",
+      orientation === "horizontal" &&
+        "h-2 border-t border-t-transparent",
       className
     )}
     orientation={orientation}
